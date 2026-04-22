@@ -1,2 +1,0 @@
-Fix errors when compiling with ``glibc`` 2.43 and compiler that defaults
-to using C23 standard.

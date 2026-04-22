@@ -1,2 +1,0 @@
-(macOS) Fix built-time error when trying to create an .app bundle with
-data collected from a directory that contains symlinked elements.

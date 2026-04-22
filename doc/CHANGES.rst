@@ -15,6 +15,67 @@ Changelog for PyInstaller
 
 .. towncrier release notes start
 
+6.20.0 (2026-04-22)
+-------------------
+
+Bugfix
+~~~~~~
+
+* (Linux) Fix binary dependency analysis in Termux environment; previously,
+  no binary dependencies would be reported due to mismatched ``ldd`` output
+  pattern. (:issue:`9402`)
+* (Linux) Fix compatibility issues with Termux python 3.13, caused by
+  platform being now reported as "android" instead of "linux" (PEP 738).
+  (:issue:`9398`)
+* (macOS) Fix built-time error when trying to create an .app bundle with
+  data collected from a directory that contains symlinked elements.
+  (:issue:`9375`)
+* Fix the ``forkserver`` spawn mode of ``multiprocessing`` under python
+  3.13.13, 3.14.4, and the upcoming 3.15. (:issue:`9423`)
+* Remove warning about non-existing ``tclX`` module directory; in some Tcl
+  distributions (e.g., Debian-packaged Tcl), this directory is located
+  under the main library/data directory, and therefore the stand-alone
+  directory neither exists nor needs to be explicitly collected.
+  (:issue:`9401`)
+
+
+Hooks
+~~~~~
+
+* Prevent the run-time hook for ``gi.repository.GLib`` from overriding
+  the implicit default value of the ``XDG_DATA_DIRS`` environment
+  variable (i.e., ``/usr/local/share/:/usr/share/``) when adding the
+  frozen application's top-level directory to the list of data directories.
+  (:issue:`9422`)
+* Update ``gi.repository.Gio`` hook to collect corresponding platform-specific
+  typelib (``GioWin32`` or ``GioUnix``), and add hooks for these modules.
+  This aims to prevent potential run-time errors, either because the typelib
+  is missing, or because it was opportunistically loaded from the run-time
+  system and happens to be of incompatible version. (:issue:`9410`)
+* Update ``gi.repository.GLib`` hook to collect corresponding platform-specific
+  typelib (``GLibWin32`` or ``GLibUnix``), and add hooks for these modules.
+  This aims to prevent potential run-time errors, either because the typelib
+  is missing, or because it was opportunistically loaded from the run-time
+  system and happens to be of incompatible version. (:issue:`9410`)
+
+
+Bootloader
+~~~~~~~~~~
+
+* (Windows) Add new option to the ``waf`` build script, ``--no-cfg``,
+  that allows bootloader to be built without Control Flow Guard (CFG)
+  enabled. Applicable only when building with MSVC toolchain. (:issue:`9352`)
+* Fix errors when compiling with ``glibc`` 2.43 and compiler that defaults
+  to using C23 standard. (:issue:`9371`)
+* Rework the handling of unknown target CPU architectures in the bootloader
+  build script, and add identification for ``loongsoon`` and ``sunway`` to
+  the bundled copy of ``waflib``. The bootloader directories for these
+  platforms now use PyInstaller's normalized platform name (i.e.,
+  ``Linux-64bit-loongarch`` and ``Linux-64bit-sunway`` instead of
+  former ``Linux-64bit-loongarch64`` and ``Linux-64bit-sw_64``). (:issue:`9403`)
+* Update the bundled zlib sources to v1.3.2. (:issue:`9384`)
+
+
 6.19.0 (2026-02-14)
 -------------------
 
