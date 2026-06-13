@@ -1,2 +1,0 @@
-Update the ``gi.repository.Adw`` hook to collect translation files
-for ``libadwaita``.

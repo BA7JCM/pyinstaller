@@ -15,6 +15,38 @@ Changelog for PyInstaller
 
 .. towncrier release notes start
 
+6.16.0 (2026-06-13)
+-------------------
+
+Features
+~~~~~~~~
+
+* Add support for Python 3.15. (:issue:`9456`)
+* Initial support for setting :ref:`alternative splash screen centering modes
+  <splash screen centering>` for multi-monitor setups. (:issue:`6271`)
+
+
+Hooks
+~~~~~
+
+* Prevent ``_ios_support`` and ``libobjc.so`` from being collected on non-IOS
+  platforms if :mod:`webbrowser` is imported. (:issue:`9436`)
+* Update ``scipy`` hook for compatibility with upcoming ``scipy`` v1.18.0.
+  (:issue:`9450`)
+* Update the ``gi.repository.Adw`` hook to collect translation files
+  for ``libadwaita``. (:issue:`9444`)
+
+
+Documentation
+~~~~~~~~~~~~~
+
+* Document known issues with using splash screen in ``onedir`` GUI-based
+  applications. (:issue:`9425`)
+* Document the "glowing magenta border" problem in splash screen when
+  splash screen image contains semi-transparent pixels (for example,
+  due to feathered edges). (:issue:`9425`)
+
+
 6.20.0 (2026-04-22)
 -------------------
 
