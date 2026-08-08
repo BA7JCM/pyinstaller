@@ -15,6 +15,50 @@ Changelog for PyInstaller
 
 .. towncrier release notes start
 
+6.22.0 (2026-08-08)
+-------------------
+
+Features
+~~~~~~~~
+
+* Implement support for Tcl/Tk 9 builds with embedded data archives in
+  ``tkinter`` hooks and the splash screen. Tcl/Tk 9 with embedded data
+  is used, for example, in python.org Windows builds of Python 3.15.0b3.
+  (:issue:`9470`)
+* Use portable path separators (always forward slashes) in generated spec files.
+  (:issue:`8004`)
+
+
+Bugfix
+~~~~~~
+
+* (Linux) Fix regression that prevented automatic collection of Wayland
+  shared libraries that are bundled with ``pywayland`` binary wheels.
+  (:issue:`9430`)
+* Fix :class:`ValueError` build error on Windows if :option:`--specpath` is set
+  to a different drive. (:issue:`8116`)
+* Fix backslash mishandling of some CLI options (``--contents-directory``,
+  ``--resource``). (:issue:`9472`)
+
+
+Hooks
+~~~~~
+
+* Add hooks for ``gi.repository.Soup`` and ``gi.repository.Spelling``.
+  (:issue:`9491`)
+* Rework the standard and run-time hook for ``_tkinter`` so that error
+  about missing Tcl/Tk data directories is raised at build time rather
+  than at run time. (:issue:`9470`)
+* Update the ``matplotlib.backends`` hook to automatically collect dist
+  metadata for backends that are discovered via ``matplotlib.backend``
+  entry point (Matplotlib >= 3.9). (:issue:`9469`)
+* Update the ``matplotlib.backends`` hook to obtain the list of available
+  Matplotlib backends from the new backends registry, if available
+  (Matplotlib >= 3.9). Fixes compatibility with Matplotlib >= 3.11, which
+  removed the old list of available backends that was superseded by the
+  backends registry. (:issue:`9467`)
+
+
 6.21.0 (2026-06-13)
 -------------------
 
