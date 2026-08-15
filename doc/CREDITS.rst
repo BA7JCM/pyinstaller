@@ -5,6 +5,13 @@ Thanks goes to all the kind PyInstaller contributors who have contributed
 new code, bug reports, fixes, comments and ideas. A brief list follows,
 please let us know if your name is omitted by accident:
 
+Contributions to PyInstaller 6.22.1
+-----------------------------------
+
+* Rok Mandeljc
+* Joe Rivera
+* Simão Afonso
+
 Contributions to PyInstaller 6.22.0
 -----------------------------------
 

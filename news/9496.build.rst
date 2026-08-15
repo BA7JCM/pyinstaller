@@ -1,1 +1,0 @@
-(NetBSD) Fix ``KeyError: 'netbsd'`` when compiling the bootloader.

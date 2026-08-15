@@ -15,6 +15,95 @@ Changelog for PyInstaller
 
 .. towncrier release notes start
 
+6.22.1 (2026-08-15)
+-------------------
+
+Bugfix
+~~~~~~
+
+* Fix invalid spec file generation when :option:`--hide-console` option is
+  given (regression introduced in v6.22.0). (:issue:`9503`)
+* (NetBSD) Fix binary dependency analysis. (:issue:`9505`)
+* (NetBSD) Fix/improve NetBSD support: add the ``is_netbsd`` platform
+  flag, treat NetBSD as a Unix platform, and search ``/usr/local/lib`` for
+  shared libraries, as is already done for FreeBSD and OpenBSD. (:issue:`9496`)
+* (OpenBSD) Fix binary dependency analysis. (:issue:`9505`)
+
+
+Incompatible Changes
+~~~~~~~~~~~~~~~~~~~~
+
+* (POSIX) Executables built in ``onedir`` mode with ``setuid`` bit set
+  now validate the owner and permissions on their contents directory
+  (typically the ``_internal`` directory); the owner ID must match the
+  effective user ID under which the process is running, and the
+  permissions on the directory need to be `0700`. This aims to prevent
+  unprivileged users from modifying contents of an application that
+  runs in privileged mode. (:issue:`9492`)
+* (POSIX) When running as a ``onefile`` child process (on POSIX platforms
+  other than OpenBSD and AIX), the bootloader now attempts to verify
+  the parent process executable via ``procfs`` lookup. This check is
+  mandatory for ``onefile`` executables with ``setuid`` bit set; if the
+  relevant ``procfs`` entry is inaccessible (for example, due to ``procfs``
+  not being mounted, as is the case on FreeBSD by default, or due to access
+  being blocked by local security policy), the process will exit with
+  security validation error message. For regular ``onefile`` executables
+  (without ``setuid`` bit set), the parent-process check is enforced when the
+  relevant ``procfs`` entry is accessible, and skipped when it happens to be
+  inaccessible. (:issue:`9492`)
+* (POSIX) When running as a ``onefile`` child process and the executable
+  has ``setuid`` bit set, the bootloader now validates the owner and
+  permissions on the (inherited) temporary directory. The owner ID of the
+  temporary directory must match the effective user ID under which the
+  process is running, and permissions on the temporary directory are need
+  to be `0700`. This might (further) break applications that start in
+  privileged mode and then attempt to drop privileges without transferring
+  the ownership of the temporary directory to the unprivileged user;
+  while formerly this would result in the main application process locking
+  itself (as well as any sub-processes spawned by it via ``sys.executable``)
+  from the temporary directory, it will now also cause any subprocess
+  spawned via ``sys.executable`` to fail the security validation the
+  bootloader. (:issue:`9492`)
+* (OpenBSD, AIX) Running ``onefile`` executables with ``setuid`` bit set
+  is explicitly disallowed, due to lack of support for verifying the
+  executable of the parent process and security implications. (:issue:`9492`)
+
+
+Bootloader
+~~~~~~~~~~
+
+* Implement additional validation of inherited environment for ``onefile``
+  execution codepaths, in order to prevent execution with spoofed environment;
+  see `GHSA-9fxf-4qw3-ghmr
+  <https://github.com/pyinstaller/pyinstaller/security/advisories/GHSA-9fxf-4qw3-ghmr>`_.
+  When running as a child ``onefile`` process (i.e., the main application
+  process or worker sub-process spawned via ``sys.executable``), the bootloader
+  now attempts to look up the parent process ID, and resolve its executable.
+  The path to the parent process' executable must match that of the current
+  process' executable, otherwise an error is raised. This check is
+  implemented on Windows, macOS, and POSIX platforms where the look-up
+  is possible through ``procfs`` filesystem; this includes Linux, Cygwin,
+  FreeBSD, and Solaris, but not OpenBSD nor AIX. For additional
+  compatibility implications, see the **Breaking changes** section.
+  (:issue:`9492`)
+
+
+Documentation
+~~~~~~~~~~~~~
+
+* Document the new security validation in bootloader and its implications
+  for users. (:issue:`9492`)
+
+
+Bootloader build
+~~~~~~~~~~~~~~~~
+
+* (NetBSD) Fix ``KeyError: 'netbsd'`` when compiling the bootloader.
+  (:issue:`9496`)
+* (OpenBSD) Fix misreport of cross-compilation when compiling bootloader
+  on an OpenBSD system. (:issue:`9496`)
+
+
 6.22.0 (2026-08-08)
 -------------------
 
