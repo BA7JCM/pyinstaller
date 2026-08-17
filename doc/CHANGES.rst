@@ -15,6 +15,17 @@ Changelog for PyInstaller
 
 .. towncrier release notes start
 
+6.22.2 (2026-08-17)
+-------------------
+
+Bugfix
+~~~~~~
+
+* (Windows) Fix spurious security validation error when a ``onefile``
+  executable is launched from a symlinked directory or a junction.
+  (:issue:`9508`)
+
+
 6.22.1 (2026-08-15)
 -------------------
 
